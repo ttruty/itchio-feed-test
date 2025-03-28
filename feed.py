@@ -1,58 +1,43 @@
-import feedparser
-import requests
 import yaml
+import xml.etree.ElementTree as xml_tree
 
-def get_itchio_feed(username):
-    """
-    Retrieves and parses the RSS feed of an Itch.io user's games.
+with open('feed.yaml','r')as file: 
+    yaml_data = yaml.safe_load(file)
 
-    Args:
-        username (str): The Itch.io username.
+rss_element = xml_tree.Element('rss',{'version':'2.0',
+    'xmlns:itunes':'http://www.itunes.com/dtds/podcast-1.0.dtd',
+    'xmlns:content':'http://purl.org/rss/1.0/modules/content/'})
 
-    Returns:
-        list: A list of dictionaries, where each dictionary represents a feed entry.
-              Returns None if an error occurs.
-    """
-    url = f"https://itch.io/games/newest/by-{username}.xml"
+channel_element =xml_tree.SubElement(rss_element,'channel')
 
-    try:
-        response = requests.get(url)
-        response.raise_for_status()  # Raise HTTPError for bad responses (4xx or 5xx)
-        feed = feedparser.parse(response.content)
+link_prefix = yaml_data['link']
 
-        if feed.get("entries"):
-            return feed.entries
-        else:
-            print(f"No entries found for {username}.")
-            return None
+xml_tree.SubElement(channel_element,'title').text = yaml_data['title']
+xml_tree.SubElement(channel_element,'format').text = yaml_data['format']
+xml_tree.SubElement(channel_element,'subtitle').text = yaml_data['subtitle']
+xml_tree.SubElement(channel_element,'itunes:author').text = yaml_data['author']
+xml_tree.SubElement(channel_element,'description').text = yaml_data['description']
+xml_tree.SubElement(channel_element,'itunes:image',{'href': link_prefix + yaml_data['image'] })
+xml_tree.SubElement(channel_element,'language').text = yaml_data['language']
+xml_tree.SubElement(channel_element,'link').text = link_prefix
 
-    except requests.exceptions.RequestException as e:
-        print(f"Error fetching feed for {username}: {e}")
-        return None
-    except Exception as e:
-        print(f"An unexpected error occurred: {e}")
-        return None
+xml_tree.SubElement(channel_element,'itunes:category',{'text': yaml_data['category']})
 
-def save_feed_to_yaml(entries, filename="feed.yaml"):
-    """
-    Saves the feed entries to a YAML file.
+for item in yaml_data['item']:
+    item_element = xml_tree.SubElement(channel_element,'item')
+    xml_tree.SubElement(item_element,'title').text = item['title']
+    xml_tree.SubElement(item_element,'itunes:author').text = yaml_data['author']
+    xml_tree.SubElement(item_element,'description').text = item['description']
+    xml_tree.SubElement(item_element,'itunes:duration').text = item['duration']
+    xml_tree.SubElement(item_element,'pubDate').text = item['published']
+    xml_tree.SubElement(item_element,'title').text = item['title']
 
-    Args:
-        entries (list): A list of feed entries.
-        filename (str, optional): The name of the YAML file to save to.
-                                  Defaults to "feed.yaml".
-    """
-    if entries:
-        try:
-            with open(filename, "w") as yaml_file:
-                yaml.dump(entries, yaml_file)
-            print(f"Feed saved to {filename}")
-        except Exception as e:
-            print(f"Error saving feed to YAML: {e}")
+    enclosure = xml_tree.SubElement(item_element,'enclosure',{
+        'url': link_prefix + item['file'],
+        'type': 'audio/mpeg',
+        'length': item['length']
+    })
 
-# Example Usage:
-username = "button-masher-brew-games" # Replace with the desired itch.io user name.
-feed_entries = get_itchio_feed(username)
 
-if feed_entries:
-    save_feed_to_yaml(feed_entries)
+output_tree = xml_tree.ElementTree(rss_element)
+output_tree.write('podcast.xml',encoding='UTF-8', xml_declaration=True)

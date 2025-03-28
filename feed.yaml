@@ -1,55 +1,22 @@
-- !!python/object/new:feedparser.util.FeedParserDict
-  dictitems:
-    createdate: Thu, 25 Jan 2024 04:38:12 GMT
-    currency: USD
-    guidislink: true
-    html: 'yes'
-    id: https://button-masher-brew-games.itch.io/emo-bot-2000
-    imageurl: https://img.itch.zone/aW1nLzE0Nzk0Mjc4LnBuZw==/315x250%23c/3WGW4a.png
-    link: https://button-masher-brew-games.itch.io/emo-bot-2000
-    links:
-    - !!python/object/new:feedparser.util.FeedParserDict
-      dictitems:
-        href: https://button-masher-brew-games.itch.io/emo-bot-2000
-        rel: alternate
-        type: text/html
-    plaintitle: Emo Bot 2000
-    platforms: ''
-    price: $0.00
-    published: Thu, 25 Jan 2024 04:38:12 GMT
-    published_parsed: !!python/object/apply:time.struct_time
-    - !!python/tuple
-      - 2024
-      - 1
-      - 25
-      - 4
-      - 38
-      - 12
-      - 3
-      - 25
-      - 0
-    - tm_gmtoff: null
-      tm_zone: null
-    summary: 'Help Emo Bot not be sad AF. He has one purpose, STOP THE SPREAD of the
-      Capsule dudes.
-
-      <img alt="Emo Bot 2000" src="https://img.itch.zone/aW1nLzE0Nzk0Mjc4LnBuZw==/315x250%23c/3WGW4a.png"
-      />'
-    summary_detail: !!python/object/new:feedparser.util.FeedParserDict
-      dictitems:
-        base: ''
-        language: null
-        type: text/html
-        value: 'Help Emo Bot not be sad AF. He has one purpose, STOP THE SPREAD of
-          the Capsule dudes.
-
-          <img alt="Emo Bot 2000" src="https://img.itch.zone/aW1nLzE0Nzk0Mjc4LnBuZw==/315x250%23c/3WGW4a.png"
-          />'
-    title: Emo Bot 2000 [Free] [Puzzle]
-    title_detail: !!python/object/new:feedparser.util.FeedParserDict
-      dictitems:
-        base: ''
-        language: null
-        type: text/plain
-        value: Emo Bot 2000 [Free] [Puzzle]
-    updatedate: Fri, 26 Jan 2024 03:45:16 GMT
+title: The Button Masher Brew
+subtitle: Mashing Buttons and Brewing Bashers
+author: Tim Truty
+description: Bashing Muttons and Mewing Rashers
+image: /images/artwork.jpg
+language: en-us
+category: Technology
+format: audio/mpeg
+link: https://buttonmasherbrew.com
+item:
+  - title: EP01-What's Happening in 2025
+    description: Tim discusses Mashing and Brewing
+    published: Thu, 12 Jan 2025 18:00:00 GMT
+    file: /audio/TFIT01.mp3
+    duration: 00:00:36
+    length: 576,324
+  - title: EP02-Radically Radical
+    description:  Tim is radically radical in this episode
+    published: Thu, 19 Jan 2025 18:00:00 GMT
+    file: /audio/TFIT02.mp3
+    duration: 00:00:22
+    length: 351,963
